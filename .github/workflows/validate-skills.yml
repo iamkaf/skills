@@ -1,0 +1,90 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install -g js-yaml
+
+      - name: Validate Skill Structure & Frontmatter
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const yaml = require('js-yaml');
+
+            const skillsDir = path.join(process.cwd(), 'skills');
+            
+            if (!fs.existsSync(skillsDir)) {
+              core.setFailed('❌ Critical: "skills" directory not found in root.');
+              return;
+            }
+
+            const folders = fs.readdirSync(skillsDir, { withFileTypes: true })
+              .filter(dirent => dirent.isDirectory())
+              .map(dirent => dirent.name);
+
+            console.log(`🔍 Found ${folders.length} skills to validate...`);
+
+            let hasError = false;
+
+            folders.forEach(slug => {
+              const skillFile = path.join(skillsDir, slug, 'SKILL.md');
+              
+              // Check 1: File Existence
+              if (!fs.existsSync(skillFile)) {
+                console.error(`❌ [${slug}] Missing SKILL.md`);
+                hasError = true;
+                return;
+              }
+
+              // Check 2: Frontmatter Validation
+              try {
+                const content = fs.readFileSync(skillFile, 'utf8');
+                // Split by '---' to get frontmatter
+                const parts = content.split('---');
+                if (parts.length < 3) {
+                  console.error(`❌ [${slug}] Invalid Frontmatter format (missing --- fences)`);
+                  hasError = true;
+                  return;
+                }
+                
+                const meta = yaml.load(parts[1]);
+                
+                const requiredFields = ['name', 'description', 'version'];
+                const missing = requiredFields.filter(field => !meta[field]);
+
+                if (missing.length > 0) {
+                  console.error(`❌ [${slug}] Missing metadata: ${missing.join(', ')}`);
+                  hasError = true;
+                } else {
+                  console.log(`✅ [${slug}] Valid (v${meta.version})`);
+                }
+
+              } catch (e) {
+                console.error(`❌ [${slug}] YAML Parsing error: ${e.message}`);
+                hasError = true;
+              }
+            });
+
+            if (hasError) {
+              core.setFailed('Validation failed. Please fix the errors above.');
+            } else {
+              console.log('🎉 All skills are valid!');
+            }
