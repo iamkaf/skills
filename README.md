@@ -1,6 +1,6 @@
 # iamkaf/skills
 
-A collection of personal AI agent skills, compatible with the [Agent Skills Standard](https://skills.sh/docs/faq).
+A collection of personal AI agent skills, compatible with the [Agent Skills Standard](https://agentskills.io/home).
 
 These skills are designed to be installed via the `npx skills` CLI and work across Claude Code, Codex, and other compatible agents.
 
