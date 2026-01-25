@@ -1,5 +1,5 @@
 ---
-name: Clean Transient Comments
+name: clean-transient-comments
 description: Use when the user asks to "clean transient comments", "remove temporary comments", or remove comments that describe past changes rather than documenting current code.
 version: 1.1.0
 ---
