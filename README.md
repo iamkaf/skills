@@ -1,6 +1,6 @@
 # iamkaf/skills
 
-A collection of personal AI agent skills, compatible with the [Agent Skills Standard](https://github.com/vercel-labs/skills).
+A collection of personal AI agent skills, compatible with the [Agent Skills Standard](https://skills.sh/docs/faq).
 
 These skills are designed to be installed via the `npx skills` CLI and work across Claude Code, Codex, and other compatible agents.
 
@@ -10,14 +10,6 @@ To install these skills into your local agent environment:
 
 ```bash
 npx skills add iamkaf/skills
-
-```
-
-You can also install specific skills individually:
-
-```bash
-npx skills add iamkaf/skills/ai-writing-audit
-
 ```
 
 ## Available Skills
