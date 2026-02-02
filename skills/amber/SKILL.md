@@ -1,7 +1,7 @@
 ---
 name: amber
 description: Index for Amber documentation (links only).
-version: 0.3.1
+version: 0.1.0
 ---
 
 # Amber (Index)
