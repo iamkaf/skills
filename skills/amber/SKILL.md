@@ -1,7 +1,7 @@
 ---
 name: amber
 description: Index for Amber documentation (links only).
-version: 0.2.1
+version: 0.3.0
 ---
 
 # Amber (Index)
@@ -9,37 +9,80 @@ version: 0.2.1
 ## Start Here
 - [[docs/index.md]]
 
-## By Amber Version
-- Amber 10.x (MC 26.1)
-  - [[docs/v10/index.md]]
-  - [[docs/v10/guide/getting-started.md]]
-  - [[docs/v10/api/core.md]]
-  - [[docs/v10/systems/registry.md]]
-  - [[docs/v10/systems/events.md]]
-  - [[docs/v10/systems/commands.md]]
-  - [[docs/v10/systems/networking.md]]
-  - [[docs/v10/advanced/best-practices.md]]
-
-- Amber 9.x (MC 1.21.11)
-  - [[docs/v9/index.md]]
+## Amber 9.x (Minecraft 1.21.11)
+- [[docs/v9/index.md]]
+- Getting started
+  - [[docs/v9/guide/installation.md]]
   - [[docs/v9/guide/getting-started.md]]
-  - [[docs/v9/api/core.md]]
+- Systems
   - [[docs/v9/systems/registry.md]]
   - [[docs/v9/systems/events.md]]
-  - [[docs/v9/systems/commands.md]]
   - [[docs/v9/systems/networking.md]]
+  - [[docs/v9/systems/commands.md]]
+  - [[docs/v9/systems/configuration.md]]
+  - [[docs/v9/systems/creative-tabs.md]]
+- API
+  - [[docs/v9/api/core.md]]
+  - [[docs/v9/api/platform.md]]
+- Utilities
+  - [[docs/v9/utilities/items.md]]
+  - [[docs/v9/utilities/inventory.md]]
+  - [[docs/v9/utilities/keybinds.md]]
+  - [[docs/v9/utilities/sound.md]]
+  - [[docs/v9/utilities/level.md]]
+  - [[docs/v9/utilities/player.md]]
+  - [[docs/v9/utilities/math.md]]
+  - Utility functions
+    - [[docs/v9/utilities/functions/index.md]]
+    - [[docs/v9/utilities/functions/item.md]]
+    - [[docs/v9/utilities/functions/player.md]]
+    - [[docs/v9/utilities/functions/world.md]]
+    - [[docs/v9/utilities/functions/client.md]]
+    - [[docs/v9/utilities/functions/math.md]]
+- Advanced
   - [[docs/v9/advanced/best-practices.md]]
+  - [[docs/v9/advanced/cross-platform.md]]
+  - [[docs/v9/advanced/migration.md]]
 
-- Amber 8.x (MC 1.21.10)
-  - [[docs/v8/index.md]]
+## Amber 8.x (Minecraft 1.21.10)
+- [[docs/v8/index.md]]
+- Getting started
+  - [[docs/v8/guide/installation.md]]
   - [[docs/v8/guide/getting-started.md]]
-  - [[docs/v8/api/core.md]]
+- Systems
   - [[docs/v8/systems/registry.md]]
   - [[docs/v8/systems/events.md]]
-  - [[docs/v8/systems/commands.md]]
   - [[docs/v8/systems/networking.md]]
+  - [[docs/v8/systems/commands.md]]
+  - [[docs/v8/systems/configuration.md]]
+  - [[docs/v8/systems/creative-tabs.md]]
+- API
+  - [[docs/v8/api/core.md]]
+  - [[docs/v8/api/platform.md]]
+- Utilities
+  - [[docs/v8/utilities/items.md]]
+  - [[docs/v8/utilities/inventory.md]]
+  - [[docs/v8/utilities/keybinds.md]]
+  - [[docs/v8/utilities/sound.md]]
+  - [[docs/v8/utilities/level.md]]
+  - [[docs/v8/utilities/player.md]]
+  - [[docs/v8/utilities/math.md]]
+  - Utility functions
+    - [[docs/v8/utilities/functions/index.md]]
+    - [[docs/v8/utilities/functions/item.md]]
+    - [[docs/v8/utilities/functions/player.md]]
+    - [[docs/v8/utilities/functions/world.md]]
+    - [[docs/v8/utilities/functions/client.md]]
+    - [[docs/v8/utilities/functions/math.md]]
+- Advanced
   - [[docs/v8/advanced/best-practices.md]]
+  - [[docs/v8/advanced/cross-platform.md]]
+  - [[docs/v8/advanced/migration.md]]
 
-## Porting
-- [[porting-primer-1.21.11.md]]
-
+## Internal notes (optional reading)
+- [[docs/_internal/BEAM_TOOLS_GUIDE.md]]
+- [[docs/_internal/creative-tabs-positioning-api-design.md]]
+- [[docs/_internal/amber-8.3-api-functions-consolidation-plan.md]]
+- [[docs/_internal/beam-tools-case-study-javadoc-errors.md]]
+- [[docs/_internal/beam-tools-case-study-enchantment-api.md]]
+- [[docs/_internal/beam-tools-case-study-itemlike.md]]
