@@ -1,7 +1,7 @@
 ---
 name: amber
 description: Index for Amber documentation (links only).
-version: 0.3.0
+version: 0.3.1
 ---
 
 # Amber (Index)
@@ -78,11 +78,3 @@ version: 0.3.0
   - [[docs/v8/advanced/best-practices.md]]
   - [[docs/v8/advanced/cross-platform.md]]
   - [[docs/v8/advanced/migration.md]]
-
-## Internal notes (optional reading)
-- [[docs/_internal/BEAM_TOOLS_GUIDE.md]]
-- [[docs/_internal/creative-tabs-positioning-api-design.md]]
-- [[docs/_internal/amber-8.3-api-functions-consolidation-plan.md]]
-- [[docs/_internal/beam-tools-case-study-javadoc-errors.md]]
-- [[docs/_internal/beam-tools-case-study-enchantment-api.md]]
-- [[docs/_internal/beam-tools-case-study-itemlike.md]]
