@@ -1,99 +1,37 @@
----
-layout: home
+# Amber Docs (Bundled)
 
-hero:
-  name: Amber
-  text: A comprehensive multiloader library for Minecraft mod development
-  tagline: Write once, run everywhere - Unified APIs for Fabric, Forge, and NeoForge
-  image:
-    src: /icon.png
-    alt: Amber
-  actions:
-    - theme: brand
-      text: Get Started
-      link: /v9/guide/getting-started
-    - theme: alt
-      text: View on Modrinth
-      link: https://modrinth.com/mod/amber
-    - theme: alt
-      text: View on CurseForge
-      link: https://www.curseforge.com/minecraft/mc-mods/amber-lib
-    - theme: alt
-      text: View on GitHub
-      link: https://github.com/iamkaf/amber
+This directory is a **bundled copy** of Amber documentation for use inside the `amber` Agent Skill.
 
-features:
-  - icon: 🌐
-    title: Cross-Platform Compatibility
-    details: Unified APIs that work identically across Fabric, Forge, and NeoForge platforms
-  - icon: 🔧
-    title: Core Systems
-    details: Registry, Events, Configuration, and Networking systems designed for modern Minecraft modding
-  - icon: 🎮
-    title: Game Integration
-    details: Commands, HUD rendering, keybinds, and sound system utilities
-  - icon: 🛠️
-    title: Developer Utilities
-    details: Item helpers, level utilities, player feedback, and math utilities
-  - icon: 📦
-    title: Modern Architecture
-    details: Service-based architecture with platform abstraction handles differences automatically
-  - icon: 🚀
-    title: Easy to Use
-    details: Simple, intuitive APIs that get you modding faster with less boilerplate
+## Choose your doc set
 
----
+- Amber 9.x (Minecraft 1.21.11):
+  - [docs/v9/index.md](v9/index.md)
+  - Getting started: [docs/v9/guide/installation.md](v9/guide/installation.md), [docs/v9/guide/getting-started.md](v9/guide/getting-started.md)
 
-## Documentation Versions
+- Amber 8.x (Minecraft 1.21.10):
+  - [docs/v8/index.md](v8/index.md)
+  - Getting started: [docs/v8/guide/installation.md](v8/guide/installation.md), [docs/v8/guide/getting-started.md](v8/guide/getting-started.md)
 
-::: tip Choose Your Amber Version
-Select the Amber version that matches your Minecraft version:
+## Jump to common topics (Amber 9.x)
 
-- **Amber 10.x** → Minecraft 26.1
-- **Amber 9.x** → Minecraft 1.21.11
-- **Amber 8.x** → Minecraft 1.21.10
-- **Amber 3.x** → Minecraft 1.21.1
-- **Amber 1.x** → Minecraft 1.20.1
-:::
+- Systems:
+  - Registry: [v9/systems/registry.md](v9/systems/registry.md)
+  - Events: [v9/systems/events.md](v9/systems/events.md)
+  - Networking: [v9/systems/networking.md](v9/systems/networking.md)
+  - Commands: [v9/systems/commands.md](v9/systems/commands.md)
+  - Configuration: [v9/systems/configuration.md](v9/systems/configuration.md)
+  - Creative Tabs: [v9/systems/creative-tabs.md](v9/systems/creative-tabs.md)
 
-## Quick Start
+- API:
+  - Core: [v9/api/core.md](v9/api/core.md)
+  - Platform: [v9/api/platform.md](v9/api/platform.md)
 
-### 1. Add Amber to Your Project
-
-```gradle
-repositories {
-    maven { url = 'https://raw.githubusercontent.com/iamkaf/modresources/main/maven/' }
-}
-
-dependencies {
-    implementation "com.iamkaf:amber-common:9.0.2+1.21.11"
-    // Platform-specific dependencies
-    implementation "com.iamkaf:amber-fabric:9.0.2+1.21.11"
-    // OR implementation "com.iamkaf:amber-forge:9.0.2+1.21.11"
-    // OR implementation "com.iamkaf:amber-neoforge:9.0.2+1.21.11"
-}
-```
-
-### 2. Initialize Amber
-
-```java
-public class YourMod {
-    public static final String MOD_ID = "yourmod";
-
-    public static void init() {
-        AmberInitializer.initialize(MOD_ID);
-        // Your mod initialization code here
-    }
-}
-```
-
-## Documentation
-
-- **[Getting Started Guide](/v9/guide/getting-started)** - Set up your first Amber mod
-- **[API Reference](/v9/api/core)** - Detailed API documentation
-- **[Systems](/v9/systems/)** - Core system documentation
-  - **[Registry](/v9/systems/registry)** - Object registration
-  - **[Events](/v9/systems/events)** - Event handling
-  - **[Commands](/v9/systems/commands)** - Command registration
-  - **[Networking](/v9/systems/networking)** - Network communication
-- **[Best Practices](/v9/advanced/best-practices)** - Tips for effective modding
+- Utilities:
+  - Items: [v9/utilities/items.md](v9/utilities/items.md)
+  - Inventory: [v9/utilities/inventory.md](v9/utilities/inventory.md)
+  - Keybinds: [v9/utilities/keybinds.md](v9/utilities/keybinds.md)
+  - Sound: [v9/utilities/sound.md](v9/utilities/sound.md)
+  - Level: [v9/utilities/level.md](v9/utilities/level.md)
+  - Player: [v9/utilities/player.md](v9/utilities/player.md)
+  - Math: [v9/utilities/math.md](v9/utilities/math.md)
+  - Utility functions index: [v9/utilities/functions/index.md](v9/utilities/functions/index.md)
