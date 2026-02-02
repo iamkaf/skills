@@ -1,6 +1,6 @@
 ---
 name: amber
-description: Index for Amber documentation (links only).
+description: Links-only index for Amber docs (Amber is a multiloader Minecraft modding library that provides unified APIs across Fabric/Forge/NeoForge).
 version: 0.1.0
 ---
 
