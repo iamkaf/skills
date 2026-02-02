@@ -1,130 +1,85 @@
 ---
 name: amber
-description: Development guide for using the Amber multiloader library in Minecraft mods (Fabric/Forge/NeoForge), with a progressive-disclosure workflow.
-version: 0.1.0
+description: Index + progressive-disclosure guide for developing Minecraft mods with Amber (multiloader library for Fabric/Forge/NeoForge).
+version: 0.2.0
 ---
 
-# Amber Development
+# Amber (Skill Index)
 
-Use this skill when you’re developing a Minecraft mod that uses **Amber** (a multiloader library that provides unified APIs across Fabric, Forge, and NeoForge).
+This is an **index skill** for Amber.
+
+Amber is a comprehensive multiloader library for Minecraft mod development (unified APIs across **Fabric**, **Forge**, and **NeoForge**).
 
 ## When to use
 
-- You’re building a **multiloader** mod (common + fabric/forge/neoforge) and want **one set of APIs** for registries/events/networking/etc.
-- You need to **port** a mod between loaders/versions and want to know the Amber way to do it.
-- You’re wiring your project to use Kaf’s **platform version-catalog** approach (i.e. dependencies and plugin versions are centralized).
+Use this skill when you need to:
+- set up or maintain an Amber-based multiloader project
+- implement common modding systems using Amber’s APIs
+- debug cross-loader differences in an Amber project
+- port between Minecraft versions while staying on Amber conventions
 
 ## Quick workflow (progressive disclosure)
 
-Do **not** read everything.
+**Do not read everything.** Use the smallest page that answers the question.
 
-1) **Start here**: `docs/index.md`
-   - Pick the correct Amber major line for your MC version (e.g. Amber **9.x → MC 1.21.11**, Amber **8.x → MC 1.21.10**, Amber **10.x → MC 26.1**).
+1) **Pick the correct Amber line for your Minecraft version**
+   - Start at: `docs/index.md`
+   - Rule of thumb from Amber docs:
+     - **Amber 10.x** → Minecraft **26.1**
+     - **Amber 9.x** → Minecraft **1.21.11**
+     - **Amber 8.x** → Minecraft **1.21.10**
+     - **Amber 3.x** → Minecraft **1.21.1**
+     - **Amber 1.x** → Minecraft **1.20.1**
 
-2) **Then read only what you need** (choose one):
-   - Getting started: `docs/v9/guide/getting-started` (or `docs/v8/...` for MC 1.21.10)
-   - One subsystem:
-     - Registry system
-     - Events system
-     - Commands
-     - Networking
+2) **Choose the right documentation root**
+   - If you’re on MC **1.21.11** → use `docs/v9/…`
+   - If you’re on MC **1.21.10** → use `docs/v8/…`
+   - If you’re on MC **26.1** → use the Amber 10.x docs (wherever they live in this skill bundle)
 
-3) **Implement in your mod** using the minimal pattern:
-   - call `AmberInitializer.initialize(MOD_ID)` in common init
-   - register content with Amber-friendly patterns (e.g. deferred registers)
+3) **Open only the subsystem you need**
+   - Prefer subsystem pages over general guides.
 
-4) **If something behaves differently per loader**:
-   - check platform/service wiring in your project
-   - confirm you’re using the correct platform-specific Amber artifact
+4) **If you’re porting**
+   - Read: `porting-primer-1.21.11.md` (and any version-specific porting notes packaged with this skill)
 
-## Key concepts
+## What’s included with this skill
 
-- **Write once, run everywhere**: Amber provides consistent APIs across Fabric/Forge/NeoForge.
-- **Common-first architecture**: most of your code lives in `common/` and calls into Amber.
-- **Platform-specific artifacts**: you typically depend on `amber-common` in common, and a loader-specific artifact (`amber-fabric` / `amber-forge` / `amber-neoforge`) in each loader module.
-- **Service-based abstraction**: platform differences are handled behind interfaces; avoid direct loader APIs unless absolutely necessary.
+This skill is expected to ship with Amber’s documentation and reference material alongside `SKILL.md` (similar to `mc-porting`).
 
-## Common tasks
+At minimum, include:
+- `docs/index.md`
+- `docs/v9/…` (Amber 9.x docs)
+- `docs/v8/…` (Amber 8.x docs)
+- `porting-primer-1.21.11.md`
 
-### 1) Add Amber dependencies (version-catalog style)
+## Index: where to look (by task)
 
-If your project consumes a **platform version catalog** (recommended for Kaf’s workflow), the exact coordinates depend on how your catalog names them, but conceptually you want:
+### Project setup / dependencies
+- Start: `docs/index.md` → **Quick Start** section
+- Then: `docs/v9/guide/getting-started` (or the matching version)
 
-- `com.iamkaf:amber-common:<amberVersion>`
-- `com.iamkaf:amber-fabric:<amberVersion>`
-- `com.iamkaf:amber-forge:<amberVersion>`
-- `com.iamkaf:amber-neoforge:<amberVersion>`
+### Registry / deferred registration
+- `docs/v9/systems/registry`
 
-After adding them to your catalog, wire them like:
+### Events
+- `docs/v9/systems/events`
 
-**common/build.gradle(.kts)**
-```kotlin
-dependencies {
-  implementation(libs.amber.common)
-}
-```
+### Commands
+- `docs/v9/systems/commands`
 
-**fabric/build.gradle(.kts)**
-```kotlin
-dependencies {
-  modImplementation(libs.amber.fabric)
-}
-```
+### Networking
+- `docs/v9/systems/networking`
 
-(Forge/NeoForge analogous.)
+### Best practices / architecture
+- `docs/v9/advanced/best-practices`
 
-If you’re *not* using a catalog, Amber docs show a Gradle snippet in `docs/index.md`.
+### Porting / version changes
+- `porting-primer-1.21.11.md`
 
-### 2) Initialize Amber
+## Output expectations (how to answer)
 
-In your **common** entry point:
+When using this skill to answer a question:
+- Give a **minimal working example** first.
+- Then link to the **smallest relevant doc page** in this bundle.
+- Only expand to deeper pages if the first answer isn’t enough.
 
-```java
-import com.iamkaf.amber.api.core.v2.AmberInitializer;
-
-public final class TemplateMod {
-  public static final String MOD_ID = "template";
-
-  public static void init() {
-    AmberInitializer.initialize(MOD_ID);
-    // register your content / hooks here
-  }
-}
-```
-
-### 3) Register content (items/blocks/etc.)
-
-Use Amber’s recommended registration approach (often `DeferredRegister` + `RegistrySupplier` patterns in Amber-based projects).
-
-When implementing:
-- keep registrations in `common/`
-- call the “register” hook from your common init
-
-### 4) Events
-
-Prefer Amber’s unified event system when available. Implement handlers in common, and avoid loader-specific buses unless required.
-
-### 5) Debug “works on Fabric but not on Forge”
-
-Checklist:
-- Are you depending on the correct loader-specific Amber artifact?
-- Did you call `AmberInitializer.initialize(MOD_ID)` early enough?
-- Are you accidentally calling loader APIs in `common/`?
-- Does your service wiring / META-INF services file match the loader module?
-
-## Where to look in the Amber repo
-
-- `README.md` — high-level overview
-- `docs/index.md` — **entry point** + version mapping (Amber 8/9/10 → MC versions)
-- `docs/v9/…` — Amber 9 docs (MC 1.21.11)
-- `docs/v8/…` — Amber 8 docs (MC 1.21.10)
-- `porting-primer-1.21.11.md` — porting notes for the 1.21.11 era
-- Source layout (for implementation reference):
-  - `common/` + `fabric/` + `forge/` + `neoforge/`
-
-## Output expectations
-
-When answering, prefer:
-- **the smallest working snippet** (common init + one registry/event example)
-- **the specific doc path** to consult next (progressive disclosure)
-- loader/version-specific gotchas only if relevant
