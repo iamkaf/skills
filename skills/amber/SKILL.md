@@ -1,5 +1,5 @@
 ---
-name: amber-dev
+name: amber
 description: Development guide for using the Amber multiloader library in Minecraft mods (Fabric/Forge/NeoForge), with a progressive-disclosure workflow.
 version: 0.1.0
 ---
