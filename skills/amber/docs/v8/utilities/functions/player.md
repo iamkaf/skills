@@ -201,13 +201,6 @@ String value = PlayerFunctions.getPersistentData(player, "myKey");
 boolean hasKey = PlayerFunctions.hasPersistentData(player, "myKey");
 ```
 
-## Containers
-
-```java
-// Get container (inventory, ender chest, etc.)
-Container container = PlayerFunctions.getContainer(player, ContainerType.INVENTORY);
-```
-
 ## Migration
 
 Replaces `FeedbackHelper`:

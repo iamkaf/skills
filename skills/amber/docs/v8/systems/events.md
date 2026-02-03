@@ -259,6 +259,33 @@ BlockEvents.BLOCK_INTERACT.register((player, level, hand, hitResult) -> {
 });
 ```
 
+### BLOCK_CLICK
+
+Fired when a player left-clicks (attacks/punches) a block.
+
+```java
+BlockEvents.BLOCK_CLICK.register((player, level, hand, pos, direction) -> {
+    BlockState state = level.getBlockState(pos);
+
+    // Custom block clicking behavior
+    if (state.is(MyBlocks.HARD_BLOCK.get())) {
+        // Check if player has the right tool
+        ItemStack stack = player.getItemInHand(hand);
+        if (!stack.is(MyItems.HEAVY_PICKAXE.get())) {
+            player.sendSystemMessage(Component.literal("You need a heavy pickaxe!"));
+            return InteractionResult.FAIL; // Cancel the click
+        }
+    }
+
+    // Track mining statistics
+    if (player instanceof ServerPlayer serverPlayer) {
+        MiningStats.trackBlockClick(serverPlayer, state.getBlock());
+    }
+
+    return InteractionResult.PASS;
+});
+```
+
 ## Item Events
 
 Item events provide hooks for item-related actions.
@@ -307,6 +334,31 @@ ItemEvents.ITEM_PICKUP.register((player, itemEntity, itemStack) -> {
             player.sendSystemMessage(Component.literal("Mana restored!"));
         }
     }
+});
+```
+
+### MODIFY_DEFAULT_COMPONENTS
+
+Fired when default data components for items are being registered. This event is informational only and cannot be cancelled.
+
+```java
+ItemEvents.MODIFY_DEFAULT_COMPONENTS.register((context) -> {
+    // Add default enchantment to items
+    context.modify(Items.DIAMOND_SWORD, (builder) -> {
+        builder.set(DataComponents.ENCHANTMENTS, new ItemEnchantments(
+            new EnchantmentInstance(Enchantments.SHARPNESS, 2)
+        ));
+    });
+
+    // Add custom damage value to items
+    context.modify(MyItems.SPECIAL_ITEM.get(), (builder) -> {
+        builder.set(MyDataComponents.DAMAGE_VALUE, 10);
+    });
+
+    // Add custom color to leather armor
+    context.modify(Items.LEATHER_HELMET, (builder) -> {
+        builder.set(DataComponents.DYED_COLOR, new DyedItemColor(0xFF0000, false));
+    });
 });
 ```
 
@@ -515,19 +567,19 @@ Farming events provide hooks for agriculture-related actions.
 Fired when bone meal is used on a block.
 
 ```java
-FarmingEvents.BONE_MEAL_USE.register((level, pos, state, player, stack) -> {
+FarmingEvents.BONE_MEAL_USE.register((level, pos, state, stack, entity) -> {
     // Custom bone meal effects
     if (state.is(MyBlocks.MAGIC_CROP.get())) {
         if (!level.isClientSide()) {
             // Magic crops grow instantly with bone meal
             ((BonemealableBlock) state.getBlock()).performBonemeal(
                 (ServerLevel) level, level.random, pos, state);
-            
+
             // Consume extra bone meal for magic effect
-            if (player != null && !player.getAbilities().instabuild) {
+            if (entity instanceof Player player && !player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
-            
+
             // Create particle effect
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.HAPPY_VILLAGER,
@@ -539,7 +591,67 @@ FarmingEvents.BONE_MEAL_USE.register((level, pos, state, player, stack) -> {
         }
         return InteractionResult.SUCCESS; // Cancel default bone meal behavior
     }
-    
+
+    return InteractionResult.PASS;
+});
+```
+
+### FARMLAND_TRAMPLE
+
+Fired when an entity tramples farmland. Can be cancelled to prevent the farmland from turning to dirt.
+
+```java
+FarmingEvents.FARMLAND_TRAMPLE.register((level, pos, state, fallDistance, entity) -> {
+    // Prevent farmland trampling by specific entities
+    if (entity instanceof Player player) {
+        // Check if player has special boots
+        ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
+        if (boots.is(MyItems.FARMER_BOOTS.get())) {
+            return InteractionResult.FAIL; // Prevent trampling
+        }
+    }
+
+    // Prevent farmland trampling for animals in protected areas
+    if (entity instanceof Animal && isProtectedArea(level, pos)) {
+        return InteractionResult.FAIL; // Prevent trampling
+    }
+
+    // Allow trampling for heavy entities (like iron golems)
+    if (fallDistance > 2.0F) {
+        return InteractionResult.PASS; // Allow trampling
+    }
+
+    return InteractionResult.PASS;
+});
+```
+
+### CROP_GROW
+
+Fired when a crop attempts to grow. Can be cancelled to prevent growth.
+
+```java
+FarmingEvents.CROP_GROW.register((level, pos, state) -> {
+    // Accelerate crop growth in specific biomes
+    if (level.getBiome(pos).is(MyBiomes.FERTILE_LANDS)) {
+        // Apply growth boost logic
+        if (level.random.nextFloat() < 0.3F) {
+            // Trigger additional growth tick
+            level.scheduleTick(pos, state.getBlock(), 1);
+        }
+    }
+
+    // Prevent crop growth in cursed areas
+    if (isCursedArea(level, pos)) {
+        return InteractionResult.FAIL; // Cancel growth
+    }
+
+    // Modify growth based on nearby blocks
+    if (hasGrowthAccelerator(level, pos)) {
+        // Force immediate growth
+        state.randomTick((ServerLevel) level, pos, level.random);
+        return InteractionResult.SUCCESS; // Cancel vanilla growth (custom applied)
+    }
+
     return InteractionResult.PASS;
 });
 ```
@@ -847,38 +959,60 @@ private static ItemStack getSmeltedResult(ItemStack item) {
 
 Client events only fire on the client side and are useful for rendering and input handling.
 
-### HUD_RENDER
+### RENDER_HUD
 
-Fired when the HUD is being rendered.
+Fired after the HUD is being rendered. This allows you to render custom elements on the HUD.
 
 ```java
 // This would typically be registered through a client-specific entry point
-HudEvents.HUD_RENDER.register((graphics, partialTick) -> {
+HudEvents.RENDER_HUD.register((guiGraphics, tickCounter) -> {
     Minecraft minecraft = Minecraft.getInstance();
-    
+
     // Render custom HUD element
     if (shouldShowHUD()) {
-        graphics.drawString(minecraft.font, 
+        guiGraphics.drawString(minecraft.font,
             "Energy: " + getCurrentEnergy(),
             10, 10, 0xFFFFFF);
     }
 });
 ```
 
-### KEY_PRESS
+### MOUSE_SCROLL_PRE
 
-Fired when a key is pressed.
+Fired before the mouse wheel is scrolled. Can be cancelled to prevent the scroll action.
 
 ```java
-InputEvents.KEY_PRESS.register((keyCode, scanCode, action, modifiers) -> {
-    // Handle custom keybinds
-    if (keyCode == MyKeybinds.TOGGLE_FEATURE.getKey().getValue() && action == 1) {
-        // Toggle feature
-        toggleFeature();
-        return true; // Cancel further processing
+InputEvents.MOUSE_SCROLL_PRE.register((mouseX, mouseY, scrollX, scrollY) -> {
+    // Prevent scrolling in specific UI contexts
+    if (isInCustomUI()) {
+        return InteractionResult.FAIL; // Cancel scroll
     }
 
-    return false;
+    // Handle custom scroll behavior
+    if (shouldZoom()) {
+        handleZoom(scrollY);
+        return InteractionResult.SUCCESS; // Cancel default scroll
+    }
+
+    return InteractionResult.PASS; // Allow default scroll
+});
+```
+
+### MOUSE_SCROLL_POST
+
+Fired after the mouse wheel has been scrolled. This event cannot be cancelled.
+
+```java
+InputEvents.MOUSE_SCROLL_POST.register((mouseX, mouseY, scrollX, scrollY) -> {
+    // Track scroll distance for statistics
+    ScrollTracker.recordScrollDistance(Math.abs(scrollY));
+
+    // Trigger custom effects based on scroll
+    if (scrollY > 0) {
+        onScrollUp();
+    } else if (scrollY < 0) {
+        onScrollDown();
+    }
 });
 ```
 
@@ -1039,6 +1173,7 @@ public class MyMod {
 | `BLOCK_BREAK_AFTER` | After block broken | No | `(Level, Player, BlockPos, BlockState, BlockEntity)` |
 | `BLOCK_PLACE` | Block placed | Yes | `(Level, Player, BlockPos, BlockState, ItemStack)` |
 | `BLOCK_INTERACT` | Block right-clicked | Yes | `(Player, Level, InteractionHand, BlockHitResult)` |
+| `BLOCK_CLICK` | Block left-clicked (attacked) | Yes | `(Player, Level, InteractionHand, BlockPos, Direction)` |
 
 ### Item Events
 
@@ -1046,6 +1181,7 @@ public class MyMod {
 |-------|------------|--------------|------------|
 | `ITEM_DROP` | Item dropped | No | `(Player, ItemEntity)` |
 | `ITEM_PICKUP` | Item picked up | No | `(Player, ItemEntity, ItemStack)` |
+| `MODIFY_DEFAULT_COMPONENTS` | Item components being registered | No | `(ComponentModificationContext)` |
 
 ### Entity Events
 
@@ -1062,6 +1198,14 @@ public class MyMod {
 |-------|------------|--------------|------------|
 | `ANIMAL_TAME` | Animal is being tamed | Yes | `(LivingEntity, Player)` |
 | `ANIMAL_BREED` | Baby animal spawned from breeding | No | `(Animal, Animal, AgeableMob)` |
+
+### Farming Events
+
+| Event | When Fired | Cancellable | Parameters |
+|-------|------------|--------------|------------|
+| `BONEMEAL_USE` | Bonemeal applied to block | Yes | `(Level, BlockPos, BlockState, ItemStack, Entity)` |
+| `FARMLAND_TRAMPLE` | Entity tramples farmland | Yes | `(Level, BlockPos, BlockState, float, Entity)` |
+| `CROP_GROW` | Crop attempts to grow | Yes | `(Level, BlockPos, BlockState)` |
 
 ### Loot Events
 
@@ -1106,8 +1250,9 @@ public class MyMod {
 
 | Event | When Fired | Cancellable | Parameters |
 |-------|------------|--------------|------------|
-| `HUD_RENDER` | HUD is being rendered | No | `(GuiGraphics, float)` |
-| `KEY_PRESS` | Key is pressed | Yes | `(int, int, int, int)` |
+| `RENDER_HUD` | HUD is being rendered | No | `(GuiGraphics, DeltaTracker)` |
+| `MOUSE_SCROLL_PRE` | Mouse wheel scrolled (before) | Yes | `(double, double, double, double)` |
+| `MOUSE_SCROLL_POST` | Mouse wheel scrolled (after) | No | `(double, double, double, double)` |
 | `START_CLIENT_TICK` | Start of client tick | No | `()` |
 | `END_CLIENT_TICK` | End of client tick | No | `()` |
 | `BLOCK_OUTLINE_RENDER` | Block outline being rendered | Yes | `(Camera, MultiBufferSource, PoseStack, BlockHitResult, BlockPos, BlockState)` |
