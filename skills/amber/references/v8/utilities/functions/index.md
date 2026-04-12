@@ -16,7 +16,7 @@ The Functions API consists of 5 main classes:
 
 ## Migration from Old Helper Classes
 
-If you're using the old deprecated helper classes, see the [Migration Guide](../../advanced/migration#functions-api-migration) for details.
+If you're using the old deprecated helper classes, see the [Migration Guide](../../advanced/migration.md#functions-api-migration) for details.
 
 ::: warning Deprecated Classes
 The following classes are deprecated and will be removed in Amber 10.0:

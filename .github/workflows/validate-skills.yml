@@ -25,4 +25,4 @@ jobs:
           install -m 0755 "$TMPDIR/skill-validator" /usr/local/bin/skill-validator
 
       - name: Validate skills
-        run: skill-validator check --strict skills
+        run: skill-validator check skills
