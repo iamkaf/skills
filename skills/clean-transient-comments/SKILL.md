@@ -1,7 +1,9 @@
 ---
 name: clean-transient-comments
 description: Use when the user asks to "clean transient comments", "remove temporary comments", or remove comments that describe past changes rather than documenting current code.
-version: 1.1.0
+license: MIT
+metadata:
+  version: "1.1.0"
 ---
 
 Remove comments that read like commit messages or dev notes about refactors.

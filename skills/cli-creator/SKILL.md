@@ -1,6 +1,9 @@
 ---
 name: cli-creator
-description: Build a composable CLI from API docs, OpenAPI specs, SDK docs, curl examples, browser apps, admin tools, local scripts, or shell history. Use when the user wants a durable command-line tool that can run from any repo, expose composable read/write commands, return stable JSON, manage auth sanely, and pair with a companion skill. Not tied to Codex, OpenAI, or any single agent runtime.
+description: Build a durable, agent-friendly CLI from docs, specs, SDKs, curl examples, browser flows, or existing scripts. Use when the user wants a reusable command that runs from any repo, returns stable JSON, and supports safe read and write workflows.
+license: Apache-2.0
+metadata:
+  version: "1.0.0"
 ---
 
 # CLI Creator

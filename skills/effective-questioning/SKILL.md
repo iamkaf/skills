@@ -1,7 +1,9 @@
 ---
 name: effective-questioning
 description: Use when the user asks you to gather requirements, or when the request is vague and needs clarity before acting.
-version: 0.2.0
+license: MIT
+metadata:
+  version: "0.2.0"
 ---
 
 # Effective Questioning

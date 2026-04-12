@@ -14,11 +14,13 @@ npx skills add iamkaf/skills
 
 ## Available Skills
 
-| Skill | Description | Version |
-| --- | --- | --- |
-| **`ai-writing-audit`** | Audits text to remove "AI-isms" (hedging, robotic transitions) and makes writing sound more human. | `1.1.0` |
-| **`clean-transient-comments`** | Removes temporary, date-stamped, or author-specific comments while keeping documentation intact. | `1.1.0` |
-| **`effective-questioning`** | Forces the agent to pause and ask clarifying questions (The "5 Ws") when requirements are vague. | `0.2.0` |
+| Skill | Description |
+| --- | --- |
+| **`ai-writing-audit`** | Audits text to remove "AI-isms" (hedging, robotic transitions) and makes writing sound more human. |
+| **`amber`** | Amber docs index for building or porting Minecraft mods that use the Amber multiloader library. |
+| **`clean-transient-comments`** | Removes temporary, date-stamped, or author-specific comments while keeping documentation intact. |
+| **`cli-creator`** | Builds durable, agent-friendly CLIs from docs, specs, SDKs, examples, browser flows, or existing scripts. |
+| **`effective-questioning`** | Forces the agent to pause and ask clarifying questions (The "5 Ws") when requirements are vague. |
 
 ## Development
 
@@ -29,11 +31,11 @@ Each skill lives in its own directory under `skills/` and must contain a `SKILL.
 ```text
 skills/
 ├── skill-slug/
-│   ├── SKILL.md  <-- Required (Must have name, description, version)
+│   ├── SKILL.md  <-- Required (Must have valid frontmatter)
 │   └── rules.json (Optional assets)
 
 ```
 
 ### Validation
 
-This repository uses GitHub Actions to validate that all skills follow the correct folder structure and metadata format on every push.
+This repository uses GitHub Actions with `agent-ecosystem/skill-validator` to validate that all skills follow the expected structure and frontmatter format on every push.

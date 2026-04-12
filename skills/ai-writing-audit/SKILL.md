@@ -1,7 +1,9 @@
 ---
 name: ai-writing-audit
 description: Use when the user asks to "audit AI writing", "remove AI patterns", "make this sound less AI", "un-AI this text", or similar requests to identify/remove AI-generated writing patterns.
-version: 1.1.0
+license: MIT
+metadata:
+  version: "1.1.0"
 ---
 
 Audit content for AI-generated writing patterns and rewrite to sound authentic.
