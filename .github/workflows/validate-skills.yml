@@ -13,14 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.24'
-
       - name: Install skill-validator
-        run: go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@v1.5.4
+        run: |
+          set -euo pipefail
+          VERSION=1.5.4
+          URL="https://github.com/agent-ecosystem/skill-validator/releases/download/v${VERSION}/skill-validator_${VERSION}_linux_amd64.tar.gz"
+          TMPDIR="$(mktemp -d)"
+          trap 'rm -rf "$TMPDIR"' EXIT
+          curl -fsSL "$URL" -o "$TMPDIR/skill-validator.tar.gz"
+          tar -xzf "$TMPDIR/skill-validator.tar.gz" -C "$TMPDIR"
+          install -m 0755 "$TMPDIR/skill-validator" /usr/local/bin/skill-validator
 
       - name: Validate skills
-        run: |
-          "$(go env GOPATH)/bin/skill-validator" check --strict skills
+        run: skill-validator check --strict skills
