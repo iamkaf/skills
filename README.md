@@ -21,6 +21,7 @@ npx skills add iamkaf/skills
 | **`clean-transient-comments`** | Removes temporary, date-stamped, or author-specific comments while keeping documentation intact. |
 | **`cli-creator`** | Builds durable, agent-friendly CLIs from docs, specs, SDKs, examples, browser flows, or existing scripts. |
 | **`effective-questioning`** | Forces the agent to pause and ask clarifying questions (The "5 Ws") when requirements are vague. |
+| **`readme-improver`** | Transforms flat README files into polished, visually compelling project pages with better structure, copy, badges, and banners. |
 | **`vhs`** | Creates, edits, and debugs Charmbracelet VHS `.tape` files for reproducible terminal GIFs, videos, and screenshots. |
 
 ## Development
