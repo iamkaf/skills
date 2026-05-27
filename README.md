@@ -23,6 +23,7 @@ npx skills add iamkaf/skills
 | **`effective-questioning`** | Forces the agent to pause and ask clarifying questions (The "5 Ws") when requirements are vague. |
 | **`imagegen-ui-match`** | Uses browser screenshots and imagegen visual audits to iteratively match an implemented UI to a target mock. |
 | **`readme-improver`** | Transforms flat README files into polished, visually compelling project pages with better structure, copy, badges, and banners. |
+| **`security-review`** | Reviews a diff, branch, or pull request for newly introduced, high-confidence security vulnerabilities with a low-noise reporting bar. |
 | **`vhs`** | Creates, edits, and debugs Charmbracelet VHS `.tape` files for reproducible terminal GIFs, videos, and screenshots. |
 
 ## Development
