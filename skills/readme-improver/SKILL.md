@@ -3,7 +3,7 @@ name: readme-improver
 description: Transform boring, flat README files into polished, visually compelling project pages. Use when the user asks to improve, redesign, or make a README more interesting. Covers structure, copy, badges, banner images, and overall presentation. Produces GitHub-flavored Markdown that renders well on GitHub, npm, and similar platforms.
 license: MIT
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # README Improver
@@ -171,6 +171,22 @@ Use this general structure, adapting to what the project actually needs:
 ## Contributing        ← how to run from source, test, build
 ## License             ← one-liner with link
 ```
+
+**Never mix user-facing and developer-facing sections.** Keep adoption and usage content together near the top, then move contributor and maintainer material later under clearly labeled sections like `Contributing`, `Development`, or `Architecture`.
+
+Bad pattern:
+- Install for users
+- Internal build notes
+- CLI usage
+- Release process
+
+Good pattern:
+- What it is
+- Quick Start
+- Usage / API / Configuration
+- Limits
+- Contributing / Development
+- License
 
 **Formatting rules:**
 
